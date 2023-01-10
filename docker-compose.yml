@@ -1,0 +1,29 @@
+version: '3.4'
+
+networks:
+  backend:
+
+services:
+  softgendb:
+    image: postgres:15
+    container_name: softgen-db
+    environment:
+     - POSTGRES_USER=admin
+     - POSTGRES_PASSWORD=adminadmin
+     - POSTGRES_DB=Softgen
+    ports:
+     - 7777:5432
+    volumes:
+     - ./db:/var/lib/postgresql/data/
+    networks:
+     - backend
+  softgen:
+    container_name: softgen
+    image: ${DOCKER_REGISTRY-}softgen
+    build:
+      context: .
+      dockerfile: Softgen/Dockerfile
+    ports:
+      - "8001:80"
+    networks:
+      - backend

@@ -49,7 +49,7 @@ AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<DefaultDbContext>();
-    //db.Database.EnsureDeleted();
+    db.Database.EnsureDeleted();
     if (!db.Database.CanConnect())
         db.Database.Migrate();
 }

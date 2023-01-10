@@ -5,7 +5,6 @@ using DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
 using Softgen.Infrastructure.Extensions;
 using Softgen.Infrastructure.Option.Expressions;
-using System.Text.RegularExpressions;
 
 namespace Softgen.Services
 {

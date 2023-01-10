@@ -150,7 +150,12 @@ namespace Softgen.Services
 
         public async Task<bool> RemoveStudentFromGroupAsync(int groupId, int studentId, CancellationToken cancellationToken)
         {
-            var existingGroup = await GetGroupEntityByIdAsync(groupId, cancellationToken);
+            var existingGroup = _unitOfWork.GroupRepository()
+                .GetAllAsNoTrackingQueryable()
+                .Where(x => x.Id == groupId)
+                .Include(x => x.Students)
+                .FirstOrDefault();
+            
             var existingStudent = await _studentService.GetStudentEntityByIdAsync(studentId, cancellationToken);
 
             if (existingGroup != null && existingStudent != null)
@@ -170,7 +175,12 @@ namespace Softgen.Services
 
         public async Task<bool> RemoveTeacherFromGroupAsync(int groupId, int teacherId, CancellationToken cancellationToken)
         {
-            var existingGroup = await GetGroupEntityByIdAsync(groupId, cancellationToken);
+            var existingGroup = _unitOfWork.GroupRepository()
+                    .GetAllAsNoTrackingQueryable()
+                    .Where(x => x.Id == groupId)
+                    .Include(x => x.Teacher)
+                    .FirstOrDefault();
+            
             var existingTeacher = await _teacherService.GetTeacherEntityByIdAsync(teacherId, cancellationToken);
 
             if (existingGroup != null && existingTeacher != null)

@@ -150,10 +150,8 @@ namespace Softgen.Services
 
         public async Task<bool> RemoveStudentFromGroupAsync(int groupId, int studentId, CancellationToken cancellationToken)
         {
-            var existingGroup = _unitOfWork.GroupRepository()
-                .GetAllAsNoTrackingQueryable()
+            var existingGroup = GetGroups()
                 .Where(x => x.Id == groupId)
-                .Include(x => x.Students)
                 .FirstOrDefault();
             
             var existingStudent = await _studentService.GetStudentEntityByIdAsync(studentId, cancellationToken);
@@ -175,10 +173,8 @@ namespace Softgen.Services
 
         public async Task<bool> RemoveTeacherFromGroupAsync(int groupId, int teacherId, CancellationToken cancellationToken)
         {
-            var existingGroup = _unitOfWork.GroupRepository()
-                    .GetAllAsNoTrackingQueryable()
+            var existingGroup = GetGroups()
                     .Where(x => x.Id == groupId)
-                    .Include(x => x.Teacher)
                     .FirstOrDefault();
             
             var existingTeacher = await _teacherService.GetTeacherEntityByIdAsync(teacherId, cancellationToken);
@@ -209,7 +205,7 @@ namespace Softgen.Services
 
         public IQueryable<GroupEntity> GetGroups() =>
              _unitOfWork.GroupRepository()
-                    .GetAllQueryable()
+                    .GetAllAsNoTrackingQueryable()
                     .Include(x => x.Students)
                     .Include(x => x.Teacher);
     }
